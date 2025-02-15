@@ -1,0 +1,63 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# Untitled notebook
+
+## Example Data
+
+```elixir
+fields = [%{field: "accessionnumber"}]
+studies = [
+      %{patientname: "Carmack^John", patientid: 1, accessionnumber: "A001"},
+      %{patientname: "Kernighan^Brian", patientid: 2, accessionnumber: "A002"},
+      %{patientname: "Torvalds^Linus", patientid: 3, accessionnumber: "A003"},
+      %{patientname: "Van Rossum^Guido", patientid: 4, accessionnumber: "A004"},
+      %{patientname: "Valim^José", patientid: 5, accessionnumber: "A005"}
+    ]
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[
+  %{patientname: "Carmack^John", patientid: 1, accessionnumber: "A001"},
+  %{patientname: "Kernighan^Brian", patientid: 2, accessionnumber: "A002"},
+  %{patientname: "Torvalds^Linus", patientid: 3, accessionnumber: "A003"},
+  %{patientname: "Van Rossum^Guido", patientid: 4, accessionnumber: "A004"},
+  %{patientname: "Valim^José", patientid: 5, accessionnumber: "A005"}
+]
+```
+
+Instead of elimating the fields we don't want, just use `fields` to get the fields we do want. Since the map keys are atoms, we need to convert the `fields` to atoms as well. We also assume the shape of the `fields` is a list of maps where each map has one key, `field`.
+
+```elixir
+field_names =
+  fields
+  |> Enum.map(&Map.get(&1, :field))
+  |> Enum.map(&String.to_atom(&1))
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[:accessionnumber]
+```
+
+Now we enumerate the list of patients and extract the required fields.
+
+```elixir
+Enum.map(studies, fn study ->
+  Map.filter(study, fn {key, _value} -> key in field_names end)
+end)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+[
+  %{accessionnumber: "A001"},
+  %{accessionnumber: "A002"},
+  %{accessionnumber: "A003"},
+  %{accessionnumber: "A004"},
+  %{accessionnumber: "A005"}
+]
+```
