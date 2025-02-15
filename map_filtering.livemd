@@ -45,9 +45,8 @@ field_names =
 Now we enumerate the list of patients and extract the required fields.
 
 ```elixir
-Enum.map(studies, fn study ->
-  Map.filter(study, fn {key, _value} -> key in field_names end)
-end)
+Enum.map(studies, &Map.take(&1, field_names))
+
 ```
 
 <!-- livebook:{"output":true} -->
