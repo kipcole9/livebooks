@@ -1,6 +1,6 @@
 <!-- livebook:{"persist_outputs":true} -->
 
-# Untitled notebook
+# Filtering maps
 
 ## Example Data
 
